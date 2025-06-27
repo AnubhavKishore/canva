@@ -1,0 +1,104 @@
+services:
+  # Frontend - Next.js Application
+  - type: web
+    name: canva-clone-frontend
+    env: node
+    plan: starter
+    buildCommand: cd client && npm install && npm run build
+    startCommand: cd client && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: API_URL
+        value: https://canva-clone-api-gateway.onrender.com
+      - key: AUTH_GOOGLE_ID
+        sync: false
+      - key: AUTH_GOOGLE_SECRET
+        sync: false
+      - key: NEXTAUTH_URL
+        value: https://canva-clone-frontend.onrender.com
+      - key: NEXTAUTH_SECRET
+        sync: false
+
+  # API Gateway
+  - type: web
+    name: canva-clone-api-gateway
+    env: node
+    plan: starter
+    buildCommand: cd server/api-gateway && npm install
+    startCommand: cd server/api-gateway && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: DESIGN
+        value: https://canva-clone-design-service.onrender.com
+      - key: UPLOAD
+        value: https://canva-clone-upload-service.onrender.com
+      - key: SUBSCRIPTION
+        value: https://canva-clone-subscription-service.onrender.com
+
+  # Design Service
+  - type: web
+    name: canva-clone-design-service
+    env: node
+    plan: starter
+    buildCommand: cd server/design-service && npm install
+    startCommand: cd server/design-service && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10001
+      - key: MONGO_URI
+        sync: false
+
+  # Upload Service
+  - type: web
+    name: canva-clone-upload-service
+    env: node
+    plan: starter
+    buildCommand: cd server/upload-service && npm install
+    startCommand: cd server/upload-service && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10002
+      - key: MONGO_URI
+        sync: false
+      - key: cloud_name
+        sync: false
+      - key: api_key
+        sync: false
+      - key: api_secret
+        sync: false
+
+  # Subscription Service
+  - type: web
+    name: canva-clone-subscription-service
+    env: node
+    plan: starter
+    buildCommand: cd server/subscription-service && npm install
+    startCommand: cd server/subscription-service && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10003
+      - key: MONGO_URI
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        value: https://canva-clone-frontend.onrender.com
+
+databases:
+  - name: canva-clone-mongodb
+    databaseName: canva-clone
+    plan: starter 
